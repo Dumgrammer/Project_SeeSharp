@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace PapelTrail.Models;
 
 /// <summary>
-/// Represents one immutable stored version of a document.
+/// Represents one immutable stored version of a Papel document.
 /// </summary>
-public class DocumentVersion
+public class PapelVersion
 {
     /// <summary>
     /// Gets or sets the version identifier.
@@ -13,9 +13,9 @@ public class DocumentVersion
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Gets or sets the parent document identifier.
+    /// Gets or sets the parent Papel identifier.
     /// </summary>
-    public Guid DocumentId { get; set; }
+    public Guid PapelId { get; set; }
 
     /// <summary>
     /// Gets or sets the version number (1-based).
@@ -65,18 +65,17 @@ public class DocumentVersion
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     /// <summary>
-    /// Gets or sets the parent document.
+    /// Gets or sets the parent Papel document.
     /// </summary>
-    public Document Document { get; set; } = null!;
+    public PapelClass Papel { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the uploader user.
     /// </summary>
-    public User UploadedBy { get; set; } = null!;
+    public UserClass UploadedBy { get; set; } = null!;
 
     /// <summary>
     /// Gets processing jobs linked to this version.
     /// </summary>
-    public ICollection<ProcessingJob> ProcessingJobs { get; set; } = new List<ProcessingJob>();
+    public ICollection<PapelProcessingJobClass> ProcessingJobs { get; set; } = new List<PapelProcessingJobClass>();
 }
-

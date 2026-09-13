@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace PapelTrail.Models;
 
 /// <summary>
-/// Represents an asynchronous processing lifecycle for a document version.
+/// Represents an asynchronous processing lifecycle for a Papel version.
 /// </summary>
-public class ProcessingJob
+public class PapelProcessingJobClass
 {
     /// <summary>
     /// Gets or sets the processing job identifier.
@@ -13,14 +13,14 @@ public class ProcessingJob
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Gets or sets the document identifier.
+    /// Gets or sets the Papel identifier.
     /// </summary>
-    public Guid DocumentId { get; set; }
+    public Guid PapelId { get; set; }
 
     /// <summary>
-    /// Gets or sets the document version identifier.
+    /// Gets or sets the Papel version identifier.
     /// </summary>
-    public Guid DocumentVersionId { get; set; }
+    public Guid PapelVersionId { get; set; }
 
     /// <summary>
     /// Gets or sets processing state.
@@ -51,12 +51,12 @@ public class ProcessingJob
     public DateTime? CompletedAt { get; set; }
 
     /// <summary>
-    /// Gets or sets parent document.
+    /// Gets or sets parent Papel document.
     /// </summary>
-    public Document Document { get; set; } = null!;
+    public PapelClass Papel { get; set; } = null!;
 
     /// <summary>
-    /// Gets or sets document version.
+    /// Gets or sets Papel version.
     /// </summary>
-    public DocumentVersion DocumentVersion { get; set; } = null!;
+    public PapelVersion PapelVersion { get; set; } = null!;
 }

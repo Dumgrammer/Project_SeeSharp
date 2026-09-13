@@ -3,9 +3,9 @@
 namespace PapelTrail.Models;
 
 /// <summary>
-/// Represents a logical document.
+/// Represents a logical Papel document.
 /// </summary>
-public class Document
+public class PapelClass
 {
     /// <summary>
     /// Gets or sets the document identifier.
@@ -60,20 +60,20 @@ public class Document
     /// <summary>
     /// Gets or sets the owner navigation property.
     /// </summary>
-    public User Owner { get; set; } = null!;
+    public UserClass Owner { get; set; } = null!;
 
     /// <summary>
     /// Gets the historical versions for this document.
     /// </summary>
-    public ICollection<DocumentVersion> Versions { get; set; } = new List<DocumentVersion>();
+    public ICollection<PapelVersion> Versions { get; set; } = new List<PapelVersion>();
 
     /// <summary>
     /// Gets the shares for this document.
     /// </summary>
-    public ICollection<DocumentShare> Shares { get; set; } = new List<DocumentShare>();
+    public ICollection<PapelShareClass> Shares { get; set; } = new List<PapelShareClass>();
 
     /// <summary>
     /// Gets the processing jobs associated with this document.
     /// </summary>
-    public ICollection<ProcessingJob> ProcessingJobs { get; set; } = new List<ProcessingJob>();
+    public ICollection<PapelProcessingJobClass> ProcessingJobs { get; set; } = new List<PapelProcessingJobClass>();
 }

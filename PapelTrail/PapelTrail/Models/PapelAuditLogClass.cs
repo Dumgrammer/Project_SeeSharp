@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace PapelTrail.Models;
 
 /// <summary>
-/// Tracks auditable actions in the system.
+/// Tracks auditable actions in PapelTrail.
 /// </summary>
-public class AuditLog
+public class PapelAuditLogClass
 {
     /// <summary>
     /// Gets or sets the audit record identifier.
@@ -50,5 +50,5 @@ public class AuditLog
     /// <summary>
     /// Gets or sets related user navigation.
     /// </summary>
-    public User? User { get; set; }
+    public UserClass? User { get; set; }
 }

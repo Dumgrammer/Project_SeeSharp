@@ -26,7 +26,7 @@ public class DocumentService(
         ArgumentNullException.ThrowIfNull(request);
 
         var now = DateTime.UtcNow;
-        var entity = new Document
+        var entity = new PapelClass
         {
             Id = Guid.NewGuid(),
             Name = request.Name.Trim(),
@@ -39,7 +39,7 @@ public class DocumentService(
             IsDeleted = false
         };
 
-        await _dbContext.Documents.AddAsync(entity, cancellationToken).ConfigureAwait(false);
+        await _dbContext.Papels.AddAsync(entity, cancellationToken).ConfigureAwait(false);
         await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
         _logger.LogInformation("Created document {DocumentId} for owner {OwnerId}", entity.Id, ownerId);
@@ -50,11 +50,11 @@ public class DocumentService(
     /// <inheritdoc />
     public async Task<IReadOnlyList<DocumentResponseDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Documents
+        return await _dbContext.Papels
             .AsNoTracking()
-            .Where(document => !document.IsDeleted)
-            .OrderByDescending(document => document.CreatedAt)
-            .Select(document => ToDto(document))
+            .Where(papel => !papel.IsDeleted)
+            .OrderByDescending(papel => papel.CreatedAt)
+            .Select(papel => ToDto(papel))
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
     }
@@ -62,10 +62,10 @@ public class DocumentService(
     /// <inheritdoc />
     public async Task<DocumentResponseDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Documents
+        return await _dbContext.Papels
             .AsNoTracking()
-            .Where(document => document.Id == id && !document.IsDeleted)
-            .Select(document => ToDto(document))
+            .Where(papel => papel.Id == id && !papel.IsDeleted)
+            .Select(papel => ToDto(papel))
             .SingleOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
     }
@@ -73,8 +73,8 @@ public class DocumentService(
     /// <inheritdoc />
     public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await _dbContext.Documents
-            .SingleOrDefaultAsync(document => document.Id == id && !document.IsDeleted, cancellationToken)
+        var entity = await _dbContext.Papels
+            .SingleOrDefaultAsync(papel => papel.Id == id && !papel.IsDeleted, cancellationToken)
             .ConfigureAwait(false);
 
         if (entity is null)
@@ -91,18 +91,18 @@ public class DocumentService(
         return true;
     }
 
-    private static DocumentResponseDto ToDto(Document document)
+    private static DocumentResponseDto ToDto(PapelClass papel)
     {
         return new DocumentResponseDto
         {
-            Id = document.Id,
-            Name = document.Name,
-            Description = document.Description,
-            ContentType = document.ContentType,
-            FileSize = document.FileSize,
-            OwnerId = document.OwnerId,
-            CreatedAt = document.CreatedAt,
-            UpdatedAt = document.UpdatedAt
+            Id = papel.Id,
+            Name = papel.Name,
+            Description = papel.Description,
+            ContentType = papel.ContentType,
+            FileSize = papel.FileSize,
+            OwnerId = papel.OwnerId,
+            CreatedAt = papel.CreatedAt,
+            UpdatedAt = papel.UpdatedAt
         };
     }
 }

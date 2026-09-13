@@ -27,16 +27,34 @@ public class DocumentsController(IDocumentService documentService) : ControllerB
         [FromBody] CreateDocumentRequestDto request,
         CancellationToken cancellationToken)
     {
-        if (!ModelState.IsValid)
+        try
         {
-            return ValidationProblem(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            // TODO: replace with authenticated user id from JWT claims once auth is enabled.
+
+            if (!Request.Headers.TryGetValue("X-User-Id", out var userIdHeader)
+                 || !Guid.TryParse(userIdHeader.ToString(), out var ownerId)
+                 || ownerId == Guid.Empty)
+            {
+                return BadRequest("Header X-User-Id is required and must be a valid user GUID.");
+            }
+            var createdDocument = await _documentService.CreateAsync(request, ownerId, cancellationToken).ConfigureAwait(false);
+
+            return CreatedAtAction("GetById", new { id = createdDocument.Id }, createdDocument);
+
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (you can use a logging framework like Serilog, NLog, etc.)
+            // For this example, we'll just write to the console.
+            Console.WriteLine($"An error occurred while creating the document: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the document.");
         }
 
-        // TODO: replace with authenticated user id from JWT claims once auth is enabled.
-        var ownerId = Guid.Empty;
-        var createdDocument = await _documentService.CreateAsync(request, ownerId, cancellationToken).ConfigureAwait(false);
-
-        return CreatedAtAction(nameof(GetByIdAsync), new { id = createdDocument.Id }, createdDocument);
     }
 
     /// <summary>
@@ -48,8 +66,18 @@ public class DocumentsController(IDocumentService documentService) : ControllerB
     [ProducesResponseType(typeof(IReadOnlyList<DocumentResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IReadOnlyList<DocumentResponseDto>>> GetAllAsync(CancellationToken cancellationToken)
     {
-        var documents = await _documentService.GetAllAsync(cancellationToken).ConfigureAwait(false);
-        return Ok(documents);
+        try
+        {
+            var documents = await _documentService.GetAllAsync(cancellationToken).ConfigureAwait(false);
+            return Ok(documents);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (you can use a logging framework like Serilog, NLog, etc.)
+            // For this example, we'll just write to the console.
+            Console.WriteLine($"An error occurred while retrieving documents: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving documents.");
+        }
     }
 
     /// <summary>
@@ -63,13 +91,23 @@ public class DocumentsController(IDocumentService documentService) : ControllerB
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<DocumentResponseDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var document = await _documentService.GetByIdAsync(id, cancellationToken).ConfigureAwait(false);
-        if (document is null)
+        try
         {
-            return NotFound();
-        }
+            var document = await _documentService.GetByIdAsync(id, cancellationToken).ConfigureAwait(false);
+            if (document is null)
+            {
+                return NotFound();
+            }
 
-        return Ok(document);
+            return Ok(document);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (you can use a logging framework like Serilog, NLog, etc.)
+            // For this example, we'll just write to the console.
+            Console.WriteLine($"An error occurred while retrieving the document: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving the document.");
+        }
     }
 
     /// <summary>
@@ -83,12 +121,22 @@ public class DocumentsController(IDocumentService documentService) : ControllerB
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-        var wasDeleted = await _documentService.DeleteAsync(id, cancellationToken).ConfigureAwait(false);
-        if (!wasDeleted)
+        try
         {
-            return NotFound();
-        }
+            var wasDeleted = await _documentService.DeleteAsync(id, cancellationToken).ConfigureAwait(false);
+            if (!wasDeleted)
+            {
+                return NotFound();
+            }
 
-        return NoContent();
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (you can use a logging framework like Serilog, NLog, etc.)
+            // For this example, we'll just write to the console.
+            Console.WriteLine($"An error occurred while deleting the document: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the document.");
+        }
     }
 }

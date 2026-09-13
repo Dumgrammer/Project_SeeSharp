@@ -1,6 +1,20 @@
 @PapelTrail_HostAddress = http://localhost:5025
 
-GET {{PapelTrail_HostAddress}}/weatherforecast/
+### Fetches all available documents from the PapelTrail API.
+
+GET {{PapelTrail_HostAddress}}/api/documents
 Accept: application/json
 
 ###
+
+POST {{PapelTrail_HostAddress}}/api/documents
+Accept: application/json
+Content-Type: application/json
+X-User-Id: A2C319CD-58D8-447E-9F1D-044075F3DDD8
+
+{
+  "Name": "Sample Document",
+  "Description": "This is a sample document.",
+  "ContentType": "text/plain",
+  "FileSize": 12345
+}

@@ -5,7 +5,7 @@ namespace PapelTrail.Models;
 /// <summary>
 /// Represents an authenticated PapelTrail user.
 /// </summary>
-public class User
+public class UserClass
 {
     /// <summary>
     /// Gets or sets the unique user identifier.
@@ -48,20 +48,20 @@ public class User
     /// <summary>
     /// Gets the documents owned by this user.
     /// </summary>
-    public ICollection<Document> OwnedDocuments { get; set; } = new List<Document>();
+    public ICollection<PapelClass> OwnedPapels { get; set; } = new List<PapelClass>();
 
     /// <summary>
     /// Gets document versions uploaded by this user.
     /// </summary>
-    public ICollection<DocumentVersion> UploadedDocumentVersions { get; set; } = new List<DocumentVersion>();
+    public ICollection<PapelVersion> UploadedPapelVersions { get; set; } = new List<PapelVersion>();
 
     /// <summary>
     /// Gets document shares received by this user.
     /// </summary>
-    public ICollection<DocumentShare> SharedDocuments { get; set; } = new List<DocumentShare>();
+    public ICollection<PapelShareClass> SharedPapels { get; set; } = new List<PapelShareClass>();
 
     /// <summary>
     /// Gets the audit events attributed to this user.
     /// </summary>
-    public ICollection<AuditLog> AuditLogs { get; set; } = new List<AuditLog>();
+    public ICollection<PapelAuditLogClass> AuditLogs { get; set; } = new List<PapelAuditLogClass>();
 }

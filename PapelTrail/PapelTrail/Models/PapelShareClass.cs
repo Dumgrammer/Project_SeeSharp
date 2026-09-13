@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace PapelTrail.Models;
 
 /// <summary>
-/// Represents a document share entry for another user.
+/// Represents a Papel share entry for another user.
 /// </summary>
-public class DocumentShare
+public class PapelShareClass
 {
     /// <summary>
     /// Gets or sets the share identifier.
@@ -13,9 +13,9 @@ public class DocumentShare
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Gets or sets the shared document identifier.
+    /// Gets or sets the shared Papel identifier.
     /// </summary>
-    public Guid DocumentId { get; set; }
+    public Guid PapelId { get; set; }
 
     /// <summary>
     /// Gets or sets the target user identifier.
@@ -40,12 +40,12 @@ public class DocumentShare
     public DateTime? ExpiresAt { get; set; }
 
     /// <summary>
-    /// Gets or sets the shared document.
+    /// Gets or sets the shared Papel document.
     /// </summary>
-    public Document Document { get; set; } = null!;
+    public PapelClass Papel { get; set; } = null!;
 
     /// <summary>
-    /// Gets or sets the user with whom the document is shared.
+    /// Gets or sets the user with whom the Papel is shared.
     /// </summary>
-    public User SharedWithUser { get; set; } = null!;
+    public UserClass SharedWithUser { get; set; } = null!;
 }
